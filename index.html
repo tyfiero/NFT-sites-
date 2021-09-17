@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+  <link rel="stylesheet" media="screen and (max-width: 1000px)" type="text/css" href="styles/style_max_width_1000.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="scripts/CCapture.all.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Generative art from price data on Cardano!" />
+  <title>PriceArt</title>
+  <link rel="shortcut icon" type="image/png" href="assets/favicon-32x32.png" />
+</head>
+
+<body style=" background-image:  
+radial-gradient(at 60% 20%, rgb(42, 113, 208) 0, transparent 50%),  
+radial-gradient(at 80% 0%, rgb(200, 194, 174) 0, transparent 30%),  
+radial-gradient(at 0% 100%, rgb(43, 65, 65) 0, transparent 58%),  
+radial-gradient(at 0% 90%, rgb(42, 113, 208) 0, transparent 50%),  
+radial-gradient(at 71% 45%, rgb(43, 113, 208) 0, transparent 50%),  
+radial-gradient(at 0% 20%, rgb(138, 185, 181)0, transparent 50%),  
+radial-gradient(at 80% 100%, rgb(149, 204, 37) 0, transparent 50%);">
+
+
+
+
+
+
+  <div id="p5_loading" class="loadingclass">
+    <div class="loader"></div>
+  </div>
+
+  <div class="header">
+    <img
+      src="https://kds4fq7uiwxv4nhsaxxl2jtpcayws3kdfj3zaq75qmpp2xnqmr6q.arweave.net/UOXCw_RFr1408gXuvSZvEDFpbUMqd5BD_YMe_V2wZH0"
+      alt="PriceArt">
+  </div>
+
+
+
+  <div id="sketch" class="sketch">
+    <div class="content">
+
+      <script src="scripts/setup.js"></script>
+      <script src="scripts/lines.js"></script>
+      <script src="scripts/draw.js"></script>
+
+
+
+    </div>
+
+
+    <div id="canvas-and-metadata">
+      <div id="info-and-metadata">
+        <div class="info">
+          <div id="info-one">
+            <select name="date" id="date-selector">
+              <option value="Year">Year</option>
+              <option value="Month">Month</option>
+              <option value="Week">Week</option>
+              <option value="Day">Day</option>
+              <option value="4-Hour">4 Hour</option>
+            </select>
+            <div id="dynamic-selectors"></div>
+          </div>
+
+          <div id="settings">
+            <button value="Refresh Page" onclick="window.location.reload()"><span
+                class="material-icons">loop</span></button>
+          </div>
+
+
+
+        </div>
+        <div id="nft-meta-data"></div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <script src="scripts/gif.worker.js"></script>
+
+
+  <script>
+    var capturer = new CCapture({
+      format: 'png',
+      framerate: 10,
+      verbose: true,
+    });
+    var WEBMCapturer = new CCapture({
+      format: 'gif',
+      framerate: 60,
+      name: "PriceArt",
+      workersPath: "scripts/",
+      verbose: true,
+    });
+  </script>
+</body>
+
+</html>

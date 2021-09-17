@@ -1,0 +1,82 @@
+#canvas-and-metadata {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    margin-bottom: 50px;
+}
+
+#nft-meta-data {
+    height: 600px;
+}
+
+.meta-data-key,
+.meta-data-value {
+    font-size: 18px;
+}
+
+canvas {
+    margin: 20px 0;
+    -ms-touch-action: none;
+        touch-action: none;
+}
+
+.info {
+    width: 90vw;
+    height: auto;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-top: 20px;
+}
+
+#info-one select {
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 20px;
+}
+
+#info-one,
+#info-two,
+#settings {
+    width: 90vw;
+}
+
+#date-selector,
+#dynamic-selectors>* {
+    width: 26vw;
+}
+
+#date-selector {
+    margin-left: 5px;
+}
+
+.info button,
+input,
+select {
+    display: block;
+    margin: 10px 0;
+    /* width: calc(100% - 20px) !important; */
+}
+
+.info input[type=date] {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+#dynamic-selectors {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
