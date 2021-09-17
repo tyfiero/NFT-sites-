@@ -7,12 +7,12 @@ var pair = "ADA/USD";
 //color variables
 var colorAttribute;
 var startColor, endColor;
-//date variable for date text
-var inputData;
-var dateSelector;
-// Global data variables
-var data;
-var dataPoints = [];
+// //date variable for date text
+// var inputData;
+// var dateSelector;
+// // // Global data variables
+// // var data;
+// // var dataPoints = [];
 // Data variables
 var dO, dH, dL, dC, dDate, dColor, mod1, mod2, NFTnum, timeType, rank;
 //background variables
@@ -79,13 +79,10 @@ var timeToWait;
 
 function preload() {
     // Data
-    data = {
-        "yearly": loadJSON("data/yearly.json"),
-        "monthly": loadJSON("data/monthly.json"),
-        "weekly": loadJSON("data/weekly.json"),
-        "daily": loadJSON("data/daily.json"),
-        "4hour": loadJSON("data/4hour.json"),
-    };
+
+     OHLCdata = loadJSON("data/5.json"),
+ 
+
     //font
     myFont = loadFont("https://arweave.net/-hnQ1l6qi8W82XdVBX0-cWatpQcLbN5TZ6-MRKHilRc");
     // //images
@@ -127,14 +124,17 @@ function loadMetaData(metaData) {
         } else {
             var text = val[1];
             var p = document.createElement('p');
-            p.innerHTML = `<span class="meta-data-key">${metaDataNames[i]}:</span>;
-            <span class="meta-data-value">${text}</span>`;
+            p.innerHTML = `<span class="meta-data-key">${metaDataNames[i]}:</span>
+            <span class="meta-data-value">${text}</span>`
             metaDataDiv.appendChild(p);
         }
         i++;
 
     }
 }
+
+
+
 //FUNCTION SETUP
 var cnv;
 
@@ -152,257 +152,273 @@ function setup() {
     cnv.parent(document.querySelector('#canvas-and-metadata'));
     colorMode(HSB, 359, 100, 100, 1);
     textFont(myFont);
+    //pauses sketch if runs for more than 5 minutes.
+    setTimeout(timeOutPause, 300000);
+    dO = OHLCdata.open;
+    dC = OHLCdata.close;
+    dL = OHLCdata.low;
+    dH = OHLCdata.high;
+    dDate = OHLCdata.date;
+    dColor = OHLCdata.color;
+    mod1 = OHLCdata.mod1;
+    mod2 = OHLCdata.mod2;
+    rank = OHLCdata['%rank'];
+    NFTnum = OHLCdata["NFT#"];
+    timeType = OHLCdata.timeType;
+    loadMetaData(OHLCdata);
 
-    const months = {
-        '01': 'January',
-        '02': 'February',
-        '03': 'March',
-        '04': 'April',
-        '05': 'May',
-        '06': 'June',
-        '07': 'July',
-        '08': 'August',
-        '09': 'September',
-        '10': 'October',
-        '11': 'November',
-        '12': 'December',
-    };
-    // When the dropdown date is selected, it changes the variable timeType
-    document.querySelector("#date-selector").oninput = function () {
-        var e = document.getElementById("date-selector").value;
-        parentElement = document.querySelector('#dynamic-selectors');
-        parentElement.innerHTML = '';
-        switch (e) {
-            case 'Year':
-                // Create year selector
-                var selectYear = document.createElement('select');
 
-                // Create first option
-                var option = document.createElement('option');
-                option.text = 'Year:';
-                option.selected = true;
-                selectYear.appendChild(option);
-                parentElement.appendChild(selectYear);
 
-                // Create other options
-                for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
-                    var option = document.createElement('option');
-                    option.text = year[0];
-                    selectYear.appendChild(option);
-                    parentElement.appendChild(selectYear);
-                }
-                // Update data variables
-                selectYear.oninput = function () {
-                    var OHLCdata = data['yearly']['adaOHLC'][0][selectYear.value];
-                    dO = OHLCdata.open;
-                    dC = OHLCdata.close;
-                    dL = OHLCdata.low;
-                    dH = OHLCdata.high;
-                    dDate = OHLCdata.date;
-                    dColor = OHLCdata.color;
-                    mod1 = OHLCdata.mod1;
-                    mod2 = OHLCdata.mod2;
-                    rank = OHLCdata['%rank'];
-                    NFTnum = OHLCdata["NFT#"];
-                    timeType = OHLCdata.timeType;
-                    loadMetaData(OHLCdata);
-                };
-                break;
-            case 'Month':
-                // Create year selector
-                var selectYear = document.createElement('select');
-                // Create first option
-                var option = document.createElement('option');
-                option.text = 'Year:';
-                option.selected = true;
-                selectYear.appendChild(option);;
-                parentElement.appendChild(selectYear)
-                // Create other options
-                for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
-                    var option = document.createElement('option');
-                    option.text = year[0];
-                    selectYear.appendChild(option);
-                    parentElement.appendChild(selectYear);
-                }
+    // const months = {
+    //     '01': 'January',
+    //     '02': 'February',
+    //     '03': 'March',
+    //     '04': 'April',
+    //     '05': 'May',
+    //     '06': 'June',
+    //     '07': 'July',
+    //     '08': 'August',
+    //     '09': 'September',
+    //     '10': 'October',
+    //     '11': 'November',
+    //     '12': 'December',
+    // };
+    // // When the dropdown date is selected, it changes the variable timeType
+    // document.querySelector("#date-selector").oninput = function () {
+    //     var e = document.getElementById("date-selector").value;
+    //     parentElement = document.querySelector('#dynamic-selectors');
+    //     parentElement.innerHTML = '';
+    //     switch (e) {
+    //         case 'Year':
+    //             // Create year selector
+    //             var selectYear = document.createElement('select');
 
-                // Create month selector
-                selectYear.oninput = function () {
-                    var selectMonth = document.createElement('select');
+    //             // Create first option
+    //             var option = document.createElement('option');
+    //             option.text = 'Year:';
+    //             option.selected = true;
+    //             selectYear.appendChild(option);
+    //             parentElement.appendChild(selectYear);
 
-                    // Clear parrent's inner html
-                    parentElement.innerHTML = '';
-                    parentElement.appendChild(selectYear);
+    //             // Create other options
+    //             for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
+    //                 var option = document.createElement('option');
+    //                 option.text = year[0];
+    //                 selectYear.appendChild(option);
+    //                 parentElement.appendChild(selectYear);
+    //             }
+    //             // Update data variables
+    //             selectYear.oninput = function () {
+    //                 var OHLCdata = data['yearly']['adaOHLC'][0][selectYear.value];
+    //                 dO = OHLCdata.open;
+    //                 dC = OHLCdata.close;
+    //                 dL = OHLCdata.low;
+    //                 dH = OHLCdata.high;
+    //                 dDate = OHLCdata.date;
+    //                 dColor = OHLCdata.color;
+    //                 mod1 = OHLCdata.mod1;
+    //                 mod2 = OHLCdata.mod2;
+    //                 rank = OHLCdata['%rank'];
+    //                 NFTnum = OHLCdata["NFT#"];
+    //                 timeType = OHLCdata.timeType;
+    //                 loadMetaData(OHLCdata);
+    //             };
+    //             break;
+    //         case 'Month':
+    //             // Create year selector
+    //             var selectYear = document.createElement('select');
+    //             // Create first option
+    //             var option = document.createElement('option');
+    //             option.text = 'Year:';
+    //             option.selected = true;
+    //             selectYear.appendChild(option);;
+    //             parentElement.appendChild(selectYear)
+    //             // Create other options
+    //             for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
+    //                 var option = document.createElement('option');
+    //                 option.text = year[0];
+    //                 selectYear.appendChild(option);
+    //                 parentElement.appendChild(selectYear);
+    //             }
 
-                    // Create first option
-                    var option = document.createElement('option');
-                    option.text = 'Month:';
-                    option.selected = true;
-                    selectMonth.appendChild(option);
-                    parentElement.appendChild(selectMonth);
+    //             // Create month selector
+    //             selectYear.oninput = function () {
+    //                 var selectMonth = document.createElement('select');
 
-                    // Create other options
-                    for (month of Object.entries(data['monthly']['adaOHLC'][0])) {
+    //                 // Clear parrent's inner html
+    //                 parentElement.innerHTML = '';
+    //                 parentElement.appendChild(selectYear);
 
-                        if (month[0].slice(-4) === selectYear.value) {
-                            var monthNum = month[0].slice(0, 2);
-                            var option = document.createElement('option');
-                            option.text = months[monthNum];
-                            option.value = monthNum;
-                            selectMonth.appendChild(option);
-                            parentElement.appendChild(selectMonth);
-                        }
-                    }
-                    selectMonth.oninput = function () {
-                        var key = selectMonth.value + '/' + selectYear.value;
-                        var OHLCdata = data['monthly']['adaOHLC'][0][key];
-                        dO = OHLCdata.open;
-                        dC = OHLCdata.close;
-                        dL = OHLCdata.low;
-                        dH = OHLCdata.high;
-                        dDate = OHLCdata.date;
-                        dColor = OHLCdata.color;
-                        mod1 = OHLCdata.mod1;
-                        mod2 = OHLCdata.mod2;
-                        rank = OHLCdata['%rank'];
-                        NFTnum = OHLCdata["NFT#"];
-                        timeType = OHLCdata.timeType;
-                        loadMetaData(OHLCdata);
-                    }
-                };
-                break;
-            case 'Week':
-                // Create year selector
-                var selectYear = document.createElement('select');
-                // Create first option
-                var option = document.createElement('option');
-                option.text = 'Year:';
-                option.selected = true;
-                selectYear.appendChild(option);
-                parentElement.appendChild(selectYear);
-                // Create other options
-                for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
-                    var option = document.createElement('option');
-                    option.text = year[0];
-                    selectYear.appendChild(option);
-                    parentElement.appendChild(selectYear);
-                }
-                // Create week selector
-                selectYear.oninput = function () {
-                    var selectWeek = document.createElement('select');
-                    // Clear parent's inner html
-                    parentElement.innerHTML = '';
-                    parentElement.appendChild(selectYear);
-                    // Create first option
-                    var option = document.createElement('option');
-                    option.text = 'Week:';
-                    option.selected = true;
-                    selectWeek.appendChild(option);
-                    parentElement.appendChild(selectWeek);
-                    // Create other options
-                    for (week of Object.entries(data['weekly']['adaOHLC'][0])) {
-                        if (week[0].slice(0, 4) === selectYear.value) {
-                            var weekNum = week[0].slice(5);
-                            var option = document.createElement('option');
-                            option.text = weekNum;
-                            option.value = weekNum;
-                            selectWeek.appendChild(option);
-                            parentElement.appendChild(selectWeek);
-                        }
-                    }
-                    // Update data variables
-                    selectWeek.oninput = function () {
-                        var key = selectYear.value + '-' + selectWeek.value;
-                        var OHLCdata = data['weekly']['adaOHLC'][0][key];
-                        dO = OHLCdata.open;
-                        dC = OHLCdata.close;
-                        dL = OHLCdata.low;
-                        dH = OHLCdata.high;
-                        dDate = OHLCdata.date;
-                        dColor = OHLCdata.color;
-                        mod1 = OHLCdata.mod1;
-                        mod2 = OHLCdata.mod2;
-                        rank = OHLCdata['%rank'];
-                        NFTnum = OHLCdata["NFT#"];
-                        timeType = OHLCdata.timeType;
-                        loadMetaData(OHLCdata);
-                    }
-                }
-                break;
-            case 'Day':
-                // Create day selector
-                var selectDay = document.createElement('input');
-                selectDay.type = 'date';
-                selectDay.min = '2017-10-01';
-                selectDay.max = '2021-08-31';
-                parentElement.appendChild(selectDay);
-                // Update data variables
-                selectDay.oninput = function () {
-                    var dateElements = selectDay.value.split('-');
-                    var key = dateElements[1] + '/' + dateElements[2] + '/' + dateElements[0];
-                    var OHLCdata = data['daily']['adaOHLC'][0][key];
-                    dO = OHLCdata.open;
-                    dC = OHLCdata.close;
-                    dL = OHLCdata.low;
-                    dH = OHLCdata.high;
-                    dDate = OHLCdata.date;
-                    dColor = OHLCdata.color;
-                    mod1 = OHLCdata.mod1;
-                    mod2 = OHLCdata.mod2;
-                    rank = OHLCdata['%rank'];
-                    NFTnum = OHLCdata["NFT#"];
-                    timeType = OHLCdata.timeType;
-                    loadMetaData(OHLCdata);
-                }
-                break;
-            case '4-Hour':
-                // Create day selector
-                var selectDay = document.createElement('input');
-                selectDay.type = 'date';
-                selectDay.min = '2017-10-01';
-                selectDay.max = '2021-08-31';
-                parentElement.appendChild(selectDay);
-                // Create 4hour selector
-                selectDay.oninput = function () {
-                    var select4Hour = document.createElement('select');
-                    // Clear parrent's inner html
-                    parentElement.innerHTML = '';
-                    parentElement.appendChild(selectDay);
-                    // Create first option
-                    var option = document.createElement('option');
-                    option.text = '4-Hour:';
-                    option.selected = true;
-                    select4Hour.appendChild(option);
-                    parentElement.appendChild(select4Hour);
-                    // Create other options
-                    for (var i = 0; i < 24; i += 4) {
-                        var option = document.createElement('option');
-                        option.text = i;
-                        select4Hour.appendChild(option);
-                        parentElement.appendChild(select4Hour);
-                    }
-                    // Update data variables
-                    select4Hour.oninput = function () {
-                        var dateElements = selectDay.value.split('-');
-                        var yearPart = dateElements[1] + '/' + dateElements[2] + '/' + dateElements[0];
-                        var key = yearPart + '-' + select4Hour.value;
-                        var OHLCdata = data['4hour']['adaOHLC'][0][key];
-                        dO = OHLCdata.open;
-                        dC = OHLCdata.close;
-                        dL = OHLCdata.low;
-                        dH = OHLCdata.high;
-                        dDate = OHLCdata.date;
-                        dColor = OHLCdata.color;
-                        mod1 = OHLCdata.mod1;
-                        mod2 = OHLCdata.mod2;
-                        rank = OHLCdata['%rank'];
-                        NFTnum = OHLCdata["NFT#"];
-                        timeType = OHLCdata.timeType;
-                        loadMetaData(OHLCdata);
-                    };
-                };
-                break;
-        };
-    };
+    //                 // Create first option
+    //                 var option = document.createElement('option');
+    //                 option.text = 'Month:';
+    //                 option.selected = true;
+    //                 selectMonth.appendChild(option);
+    //                 parentElement.appendChild(selectMonth);
+
+    //                 // Create other options
+    //                 for (month of Object.entries(data['monthly']['adaOHLC'][0])) {
+
+    //                     if (month[0].slice(-4) === selectYear.value) {
+    //                         var monthNum = month[0].slice(0, 2);
+    //                         var option = document.createElement('option');
+    //                         option.text = months[monthNum];
+    //                         option.value = monthNum;
+    //                         selectMonth.appendChild(option);
+    //                         parentElement.appendChild(selectMonth);
+    //                     }
+    //                 }
+    //                 selectMonth.oninput = function () {
+    //                     var key = selectMonth.value + '/' + selectYear.value;
+    //                     var OHLCdata = data['monthly']['adaOHLC'][0][key];
+    //                     dO = OHLCdata.open;
+    //                     dC = OHLCdata.close;
+    //                     dL = OHLCdata.low;
+    //                     dH = OHLCdata.high;
+    //                     dDate = OHLCdata.date;
+    //                     dColor = OHLCdata.color;
+    //                     mod1 = OHLCdata.mod1;
+    //                     mod2 = OHLCdata.mod2;
+    //                     rank = OHLCdata['%rank'];
+    //                     NFTnum = OHLCdata["NFT#"];
+    //                     timeType = OHLCdata.timeType;
+    //                     loadMetaData(OHLCdata);
+    //                 }
+    //             };
+    //             break;
+    //         case 'Week':
+    //             // Create year selector
+    //             var selectYear = document.createElement('select');
+    //             // Create first option
+    //             var option = document.createElement('option');
+    //             option.text = 'Year:';
+    //             option.selected = true;
+    //             selectYear.appendChild(option);
+    //             parentElement.appendChild(selectYear);
+    //             // Create other options
+    //             for (year of Object.entries(data['yearly']['adaOHLC'][0])) {
+    //                 var option = document.createElement('option');
+    //                 option.text = year[0];
+    //                 selectYear.appendChild(option);
+    //                 parentElement.appendChild(selectYear);
+    //             }
+    //             // Create week selector
+    //             selectYear.oninput = function () {
+    //                 var selectWeek = document.createElement('select');
+    //                 // Clear parent's inner html
+    //                 parentElement.innerHTML = '';
+    //                 parentElement.appendChild(selectYear);
+    //                 // Create first option
+    //                 var option = document.createElement('option');
+    //                 option.text = 'Week:';
+    //                 option.selected = true;
+    //                 selectWeek.appendChild(option);
+    //                 parentElement.appendChild(selectWeek);
+    //                 // Create other options
+    //                 for (week of Object.entries(data['weekly']['adaOHLC'][0])) {
+    //                     if (week[0].slice(0, 4) === selectYear.value) {
+    //                         var weekNum = week[0].slice(5);
+    //                         var option = document.createElement('option');
+    //                         option.text = weekNum;
+    //                         option.value = weekNum;
+    //                         selectWeek.appendChild(option);
+    //                         parentElement.appendChild(selectWeek);
+    //                     }
+    //                 }
+    //                 // Update data variables
+    //                 selectWeek.oninput = function () {
+    //                     var key = selectYear.value + '-' + selectWeek.value;
+    //                     var OHLCdata = data['weekly']['adaOHLC'][0][key];
+    //                     dO = OHLCdata.open;
+    //                     dC = OHLCdata.close;
+    //                     dL = OHLCdata.low;
+    //                     dH = OHLCdata.high;
+    //                     dDate = OHLCdata.date;
+    //                     dColor = OHLCdata.color;
+    //                     mod1 = OHLCdata.mod1;
+    //                     mod2 = OHLCdata.mod2;
+    //                     rank = OHLCdata['%rank'];
+    //                     NFTnum = OHLCdata["NFT#"];
+    //                     timeType = OHLCdata.timeType;
+    //                     loadMetaData(OHLCdata);
+    //                 }
+    //             }
+    //             break;
+    //         case 'Day':
+    //             // Create day selector
+    //             var selectDay = document.createElement('input');
+    //             selectDay.type = 'date';
+    //             selectDay.min = '2017-10-01';
+    //             selectDay.max = '2021-08-31';
+    //             parentElement.appendChild(selectDay);
+    //             // Update data variables
+    //             selectDay.oninput = function () {
+    //                 var dateElements = selectDay.value.split('-');
+    //                 var key = dateElements[1] + '/' + dateElements[2] + '/' + dateElements[0];
+    //                 var OHLCdata = data['daily']['adaOHLC'][0][key];
+    //                 dO = OHLCdata.open;
+    //                 dC = OHLCdata.close;
+    //                 dL = OHLCdata.low;
+    //                 dH = OHLCdata.high;
+    //                 dDate = OHLCdata.date;
+    //                 dColor = OHLCdata.color;
+    //                 mod1 = OHLCdata.mod1;
+    //                 mod2 = OHLCdata.mod2;
+    //                 rank = OHLCdata['%rank'];
+    //                 NFTnum = OHLCdata["NFT#"];
+    //                 timeType = OHLCdata.timeType;
+    //                 loadMetaData(OHLCdata);
+    //             }
+    //             break;
+    //         case '4-Hour':
+    //             // Create day selector
+    //             var selectDay = document.createElement('input');
+    //             selectDay.type = 'date';
+    //             selectDay.min = '2017-10-01';
+    //             selectDay.max = '2021-08-31';
+    //             parentElement.appendChild(selectDay);
+    //             // Create 4hour selector
+    //             selectDay.oninput = function () {
+    //                 var select4Hour = document.createElement('select');
+    //                 // Clear parrent's inner html
+    //                 parentElement.innerHTML = '';
+    //                 parentElement.appendChild(selectDay);
+    //                 // Create first option
+    //                 var option = document.createElement('option');
+    //                 option.text = '4-Hour:';
+    //                 option.selected = true;
+    //                 select4Hour.appendChild(option);
+    //                 parentElement.appendChild(select4Hour);
+    //                 // Create other options
+    //                 for (var i = 0; i < 24; i += 4) {
+    //                     var option = document.createElement('option');
+    //                     option.text = i;
+    //                     select4Hour.appendChild(option);
+    //                     parentElement.appendChild(select4Hour);
+    //                 }
+    //                 // Update data variables
+    //                 select4Hour.oninput = function () {
+    //                     var dateElements = selectDay.value.split('-');
+    //                     var yearPart = dateElements[1] + '/' + dateElements[2] + '/' + dateElements[0];
+    //                     var key = yearPart + '-' + select4Hour.value;
+    //                     var OHLCdata = data['4hour']['adaOHLC'][0][key];
+    //                     dO = OHLCdata.open;
+    //                     dC = OHLCdata.close;
+    //                     dL = OHLCdata.low;
+    //                     dH = OHLCdata.high;
+    //                     dDate = OHLCdata.date;
+    //                     dColor = OHLCdata.color;
+    //                     mod1 = OHLCdata.mod1;
+    //                     mod2 = OHLCdata.mod2;
+    //                     rank = OHLCdata['%rank'];
+    //                     NFTnum = OHLCdata["NFT#"];
+    //                     timeType = OHLCdata.timeType;
+    //                     loadMetaData(OHLCdata);
+    //                 };
+    //             };
+    //             break;
+    //     };
+    // };
     // Create buttons inside the settings div
     var parentElement = document.querySelector('#settings');
     if (window.innerWidth > 1000) {
@@ -444,6 +460,11 @@ function setup() {
     buttonRefresh.style("font-size", "15px");
     buttonRefresh.style("background-color", 100);
     buttonRefresh.parent(parentElement)
+
+    function timeOutPause(){
+        paused = true;    
+        document.querySelector('.button-pause').innerHTML = '<span class="material-icons">play_arrow</span>';
+        }
 };
 
 function saveImage() {

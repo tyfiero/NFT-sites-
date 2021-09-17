@@ -1,47 +1,26 @@
 var imageSource;
 var gifLength = 60 * 5; // <-- Last number controls how many seconds should be recorded when the button is pressed
 var frameNum = 0;
-// This variable controls which data set is the source
-var imageSourceName = 'monthly';
-var saveImagesMode = false; // Set to true to start saving
 
 function draw() {
     // Set default for input
-    if (frameCount === 1) {
-        var dateSelector = document.querySelector('#date-selector');
-        dateSelector.value = 'Year';
-        var e = new Event('input', {
-            value: 'Year'
-        });
-        dateSelector.dispatchEvent(e);
-        var childSelector = document.querySelector('#dynamic-selectors').firstChild;
-        childSelector.value = '2019';
-        childSelector.dispatchEvent(e);
-        // Setup imagemode
-        if (saveImagesMode) {
-            capturer.start();
-            imageSource = Object.entries(data[imageSourceName]['adaOHLC'][0]);
-        }
-    }
-    if (saveImagesMode && frameCount - 1 < imageSource.length) {
-        if (frameCount % 300 === 0) {
-            capturer.save(`${NFTnum}.png`);
-            capturer.stop();
-            capturer.start();
-        }
-        var OHLCdata = imageSource[frameCount - 1][1];
-        dO = OHLCdata.open;
-        dC = OHLCdata.close;
-        dL = OHLCdata.low;
-        dH = OHLCdata.high;
-        dDate = OHLCdata.date;
-        dColor = OHLCdata.color;
-        mod1 = OHLCdata.mod1;
-        mod2 = OHLCdata.mod2;
-        rank = OHLCdata['%rank'];
-        NFTnum = OHLCdata["NFT#"];
-        timeType = OHLCdata.timeType;
-    }
+    // if (frameCount === 1) {
+    //     var dateSelector = document.querySelector('#date-selector');
+    //     dateSelector.value = 'Year';
+    //     var e = new Event('input', {
+    //         value: 'Year'
+    //     });
+    //     dateSelector.dispatchEvent(e);
+    //     var childSelector = document.querySelector('#dynamic-selectors').firstChild;
+    //     childSelector.value = '2019';
+    //     childSelector.dispatchEvent(e);
+    //     // Setup imagemode
+    //     if (saveImagesMode) {
+    //         capturer.start();
+    //         imageSource = Object.entries(data[imageSourceName]['adaOHLC'][0]);
+    //     }
+    // }
+
     if (isRecording && frameNum === 1) {
         WEBMCapturer.start();
     }
@@ -670,7 +649,7 @@ function draw() {
         shininess(100);
         //logoZoom
         if (mouseIsPressed) {
-            if (mouseButton === CENTER || bigLogo) {
+            if (mouseButton === CENTER) {
                 translate(332 + (mouseX / 10), 285 + (mouseY / 10), 100);
                 scale(4);
                 var spinMap = map(mouseX, 0, 1000, -0.2, 0.2);
@@ -680,27 +659,20 @@ function draw() {
                 logoLocale = 0;
             }
         } else if (bigLogo) {
-            translate(332 + (mouseX / 10), 285 + (mouseY / 10), 100);
+            translate(382, 325, 100);
             scale(4);
-             spinMap = map(mouseX, 0, 1000, -0.2, 0.2);
-             spinMapY = map(mouseY, 0, 1000, -0.2, 0.2);
-            rotateY(spinMap);
-            rotateX(-spinMapY);
+            if (mouseX < 1400 && mouseX > -50 && mouseY < 1100 && mouseY > -200) {
+                spinMap = map(mouseX, 0, 1000, -0.2, 0.2);
+                spinMapY = map(mouseY, 0, 1000, -0.2, 0.2);
+                rotateY(spinMap);
+                rotateX(-spinMapY);
+            }
             logoLocale = 0;
         } else {}
         fill(220, 100, 70);
         model(logo3D);
         pop();
         rotateLogo = rotateLogo - 0.01;
-    }
-    if (saveImagesMode) {
-        if (frameCount - 1 < imageSource.length) {
-
-            capturer.capture(canvas);
-        } else if (frameCount - 1 === imageSource.length) {
-            capturer.stop();
-            capturer.save();
-        }
     }
     if (isRecording) {
         if (frameNum < gifLength) {
@@ -721,11 +693,11 @@ function draw() {
             timeToWait = frameCount;
         }
     }
-    if(message){
+    if (message) {
         var timeToWaitNum = timeToWait + 200;
-        if(frameCount <= timeToWaitNum){
+        if (frameCount <= timeToWaitNum) {
             gifMessage();
-        }else{
+        } else {
             message = false;
         }
     }

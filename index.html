@@ -4,8 +4,14 @@
 <head>
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <link rel="stylesheet" media="screen and (max-width: 1000px)" type="text/css" href="styles/style_max_width_1000.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script> -->
+  <!-- <script>src="https://dd5fjir7byvwwm6ha2fm7muejzeyohjwlpn36jtpuf736g37c3zq.arweave.net/GPpUoj8OK2szxwaKz7KETkmHHTZb278mb6F_vxt_FvM"</script> -->
+  <script defer src="scripts/p5.min.js"></script>
+  <script defer src="scripts/setup.js"></script>
+  <script defer src="scripts/lines.js"></script>
+  <script defer src="scripts/draw.js"></script>
   <script src="scripts/CCapture.all.min.js"></script>
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +45,7 @@ radial-gradient(at 80% 100%, rgb(149, 204, 37) 0, transparent 50%);">
   <div class="header">
     <img
       src="https://kds4fq7uiwxv4nhsaxxl2jtpcayws3kdfj3zaq75qmpp2xnqmr6q.arweave.net/UOXCw_RFr1408gXuvSZvEDFpbUMqd5BD_YMe_V2wZH0"
-      alt="PriceArt">
+      alt="PriceArt" onclick="window.location.reload()">
   </div>
 
 
@@ -47,9 +53,7 @@ radial-gradient(at 80% 100%, rgb(149, 204, 37) 0, transparent 50%);">
   <div id="sketch" class="sketch">
     <div class="content">
 
-      <script src="scripts/setup.js"></script>
-      <script src="scripts/lines.js"></script>
-      <script src="scripts/draw.js"></script>
+      
 
 
 
@@ -59,17 +63,7 @@ radial-gradient(at 80% 100%, rgb(149, 204, 37) 0, transparent 50%);">
     <div id="canvas-and-metadata">
       <div id="info-and-metadata">
         <div class="info">
-          <div id="info-one">
-            <select name="date" id="date-selector">
-              <option value="Year">Year</option>
-              <option value="Month">Month</option>
-              <option value="Week">Week</option>
-              <option value="Day">Day</option>
-              <option value="4-Hour">4 Hour</option>
-            </select>
-            <div id="dynamic-selectors"></div>
-          </div>
-
+        
           <div id="settings">
             <button value="Refresh Page" onclick="window.location.reload()"><span
                 class="material-icons">loop</span></button>
@@ -89,15 +83,10 @@ radial-gradient(at 80% 100%, rgb(149, 204, 37) 0, transparent 50%);">
 
 
 
-  <script src="scripts/gif.worker.js"></script>
+  <script defer src="scripts/gif.worker.js"></script>
 
 
   <script>
-    var capturer = new CCapture({
-      format: 'png',
-      framerate: 10,
-      verbose: true,
-    });
     var WEBMCapturer = new CCapture({
       format: 'gif',
       framerate: 60,
